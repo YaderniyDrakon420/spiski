@@ -88,8 +88,61 @@ public:
     bool empty() const {
         return head == nullptr;
     }
+
+    int find(const T& value) {
+        Node* current = head;
+        int index = 0;
+        while (current) {
+            if (current->data == value) {
+                return index;
+            }
+            current = current->next;
+            index++;
+        }
+        return -1;
+    }
+
+    void erase(int position) {
+        if (position < 0) return;
+
+        Node* current = head;
+        int index = 0;
+        while (current) {
+            if (index == position) {
+                if (current->prev) {
+                    current->prev->next = current->next;
+                }
+                else {
+                    head = current->next;
+                }
+                if (current->next) {
+                    current->next->prev = current->prev;
+                }
+                else {
+                    tail = current->prev;
+                }
+                delete current;
+                return;
+            }
+            current = current->next;
+            index++;
+        }
+    }
+
+    void reverse() {
+        Node* current = head;
+        Node* temp = nullptr;
+        while (current) {
+            temp = current->prev;
+            current->prev = current->next;
+            current->next = temp;
+            current = current->prev;
+        }
+        if (temp) {
+            head = temp->prev;
+        }
+    }
 };
 
 #endif 
-
 
